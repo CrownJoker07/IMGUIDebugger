@@ -1,0 +1,11 @@
+{
+  "name": "com.zzwgamemaker.imguidebugger",
+  "version": "1.0.0",
+  "displayName": "IMGUIDebugger",
+  "description": "基于IMGUI实现的调试器",
+  "unity": "2020.3",
+  "author": {
+    "name": "ZhuangZewei",
+    "email": "zzwgamemaker@qq.com"
+  }
+}
