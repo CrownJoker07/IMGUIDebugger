@@ -93,6 +93,11 @@ namespace IMGUIDebugger
             }
             set
             {
+                if (ShowFullWindow && !value)
+                {
+                    ShowFullWindow = false;
+                }
+                
                 Instance.m_DebuggerManager.ActiveWindow = value;
                 Instance.enabled = value;
             }
