@@ -18,17 +18,24 @@ namespace IMGUIDebugger
 
         public string GetInfo()
         {
-            return $"{Name} : {Info?.Invoke()}";
+            try
+            {
+                return $"{Name} : {Info?.Invoke()}";
+            }
+            catch (Exception e)
+            {
+                return $"{Name}"; 
+            }
         }
     }
 
     public sealed partial class DebuggerComponent
     {
-        public List<InfoData> InfoDatas = new List<InfoData>();
+        private List<InfoData> _infoDatas = new List<InfoData>();
 
         public static void SetInfoDatas(List<InfoData> infoDatas)
         {
-            Instance.InfoDatas = infoDatas;
+            Instance._infoDatas = infoDatas;
         }
 
         private sealed class DebugInfoWindow : IDebuggerWindow
@@ -64,7 +71,7 @@ namespace IMGUIDebugger
                     m_LogScrollPosition = GUILayout.BeginScrollView(m_LogScrollPosition);
                     {
                         bool selected = false;
-                        foreach (InfoData infoData in Instance.InfoDatas)
+                        foreach (InfoData infoData in Instance._infoDatas)
                         {
                             if (GUILayout.Toggle(m_SelectedNode == infoData, infoData.GetInfo()))
                             {

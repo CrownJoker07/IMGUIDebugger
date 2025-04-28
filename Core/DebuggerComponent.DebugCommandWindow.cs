@@ -22,11 +22,11 @@ namespace IMGUIDebugger
     
     public sealed partial class DebuggerComponent
     {
-        public List<CommandData> CommandDatas = new List<CommandData>();
+        private List<CommandData> _commandDatas = new List<CommandData>();
 
         public static void SetCommandDatas(List<CommandData> commandDatas)
         {
-            Instance.CommandDatas = commandDatas;
+            Instance._commandDatas = commandDatas;
         }
         
         private sealed class DebugCommandWindow : IDebuggerWindow
@@ -105,9 +105,9 @@ namespace IMGUIDebugger
                         {
                             for (int j = 0; j < columns; j++)
                             {
-                                if (index >= Instance.CommandDatas.Count) break;
+                                if (index >= Instance._commandDatas.Count) break;
                                 
-                                CommandData commandData = Instance.CommandDatas[index];
+                                CommandData commandData = Instance._commandDatas[index];
 
                                 if (lastDebugType != commandData.DebugType)
                                 {
@@ -124,16 +124,30 @@ namespace IMGUIDebugger
                                 string buttonName = string.Empty;
                                 if (commandData.Info != null)
                                 {
-                                    buttonName += $"<color=#70a1ff>{commandData.Info.Invoke()}</color>";
-                                    buttonName += "\n";
+                                    try
+                                    {
+                                        buttonName += $"<color=#70a1ff>{commandData.Info.Invoke()}</color>";
+                                        buttonName += "\n";
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        // ignore
+                                    }
                                 }
                                 buttonName += commandData.Name;
 
                                 GUIStyle currentStyle = normalButtonStyle;
-                                if (commandData.State != null)
+                                try
                                 {
-                                    bool state = commandData.State.Invoke();
-                                    currentStyle = state ? activeButtonStyle : normalButtonStyle;
+                                    if (commandData.State != null)
+                                    {
+                                        bool state = commandData.State.Invoke();
+                                        currentStyle = state ? activeButtonStyle : normalButtonStyle;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    // ignore
                                 }
                                 
                                 if (GUILayout.Button(buttonName, currentStyle, GUILayout.Width(buttonWidth), GUILayout.Height(40f)))
@@ -149,7 +163,7 @@ namespace IMGUIDebugger
                             showTitle = false;
                             GUILayout.Space(10f);
                         }
-                    } while (index < Instance.CommandDatas.Count);
+                    } while (index < Instance._commandDatas.Count);
                 }
                 GUILayout.EndVertical();
             }
