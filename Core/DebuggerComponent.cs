@@ -274,7 +274,7 @@ namespace IMGUIDebugger
             }
             else
             {
-                m_IconRect = GUILayout.Window(0, m_IconRect, DrawDebuggerWindowIcon, "<b>GM</b>");
+                m_IconRect = GUILayout.Window(0, m_IconRect, DrawDebuggerWindowIcon, "", "label");
             }
 
             GUI.matrix = cachedMatrix;
@@ -431,7 +431,7 @@ namespace IMGUIDebugger
             string title = string.Format("<color=#{0}{1}{2}{3}><b>{4}</b></color>", color.r.ToString("x2"),
                 color.g.ToString("x2"), color.b.ToString("x2"), color.a.ToString("x2"),
                 m_FpsCounter.CurrentFps.ToString("F2"));
-            if (GUILayout.Button(title, GUILayout.Width(100f / DefaultWindowScale), GUILayout.Height(40f / DefaultWindowScale)))
+            if (GUILayout.Button(title, GUILayout.Width(100f / DefaultWindowScale), GUILayout.Height(60f / DefaultWindowScale)))
             {
                 ShowFullWindow = true;
             }
